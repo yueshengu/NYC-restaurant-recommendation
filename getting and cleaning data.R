@@ -1,12 +1,38 @@
 library(data.table)
 restaurant<-
-  data.frame(fread('/Users/yueyingteng/Downloads/restaurant/DOHMH_New_York_City_Restaurant_Inspection_Results.csv'))
+  data.frame(fread('C:/Users/ygu/Downloads/DOHMH_New_York_City_Restaurant_Inspection_Results.csv'))
+restaurant$DBA<-factor(restaurant$DBA)
+restaurant$BORO<-factor(restaurant$BORO)
+restaurant$BUILDING<-factor(restaurant$BUILDING)
+restaurant$STREET<-factor(restaurant$STREET)
+restaurant$ZIPCODE<-factor(restaurant$ZIPCODE)
+restaurant$PHONE<-factor(restaurant$PHONE)
+restaurant$CUISINE.DESCRIPTION<-factor(restaurant$CUISINE.DESCRIPTION)
+restaurant$INSPECTION.DATE<-as.Date(restaurant$INSPECTION.DATE,format='%m/%d/%Y')
+restaurant$ACTION<-factor(restaurant$ACTION)
+restaurant$VIOLATION.CODE<-factor(restaurant$VIOLATION.CODE)
+restaurant$VIOLATION.DESCRIPTION<-factor(restaurant$VIOLATION.DESCRIPTION)
+restaurant$CRITICAL.FLAG<-factor(restaurant$CRITICAL.FLAG)
+restaurant$ GRADE<-factor(restaurant$ GRADE)
+restaurant$INSPECTION.TYPE<-factor(restaurant$INSPECTION.TYPE)
+restaurant$GRADE.DATE<-as.Date(restaurant$GRADE.DATE,format='%m/%d/%Y')
+restaurant$RECORD.DATE<-as.Date(restaurant$RECORD.DATE,format='%m/%d/%Y')
+
+
+summary(restaurant)
+head(restaurant)
+
+summary(restaurant$ACTION)
 
 restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaurant$ZIPCODE)
 
 uniqueDbaBoro<-unique(restaurant$DbaBoro)
 
+<<<<<<< HEAD
 system.time(DbaBoroLongLat2<-t(sapply(1:length(DbaBoroLongLat2NA),function(i){
+=======
+system.time(DbaBoroLongLat<-data.frame(t(sapply(1:length(uniqueDbaBoro),function(i){
+>>>>>>> origin/master
   cat(i,'\n')
   addr<-DbaBoroLongLat2NA[i]
   url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
@@ -16,8 +42,9 @@ system.time(DbaBoroLongLat2<-t(sapply(1:length(DbaBoroLongLat2NA),function(i){
   lat = xmlValue(root[['result']][['geometry']][['location']][['lat']]) 
   long = xmlValue(root[['result']][['geometry']][['location']][['lng']])
   return(c(addr,long,lat))
-})))
+}))))
 
+<<<<<<< HEAD
 DbaBoroLongLat3<-DbaBoroLongLat2
 
 DbaBoroLongLat3NA<-DbaBoroLongLat3[is.na(DbaBoroLongLat2[,2]),1]
@@ -31,12 +58,12 @@ head(DbaBoroLongLat3)
 
 length(DbaBoroLongLat3NA)
 
+=======
+>>>>>>> origin/master
 DbaBoroLongLat2<-DbaBoroLongLat
 
-longLat1<-DbaBoroLongLat2[!is.na(DbaBoroLongLat[,2]),]
-tail(longLat1)
-nrow(longLat1)
-DbaBoroLongLat2NA<-DbaBoroLongLat2[is.na(DbaBoroLongLat[,2]),1]
+DbaBoroLongLat[,1]<-factor(DbaBoroLongLat[,1])
+DbaBoroLongLat[,2]<-as.numeric(DbaBoroLongLat[,2])
+DbaBoroLongLat[,3]<-as.numeric(DbaBoroLongLat[,3])
+summary(DbaBoroLongLat)
 
-save(longLat1,file='/Users/yueyingteng/Desktop/longLat1.RData')
-save(DbaBoroLongLat2NA,file='/Users/yueyingteng/Desktop/DbaBoroLongLat2NA.RData')
