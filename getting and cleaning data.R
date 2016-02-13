@@ -6,9 +6,9 @@ restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaur
 
 uniqueDbaBoro<-unique(restaurant$DbaBoro)
 
-system.time(DbaBoroLongLat<-t(sapply(1:length(uniqueDbaBoro),function(i){
+system.time(DbaBoroLongLat2<-t(sapply(1:length(DbaBoroLongLat2NA),function(i){
   cat(i,'\n')
-  addr<-uniqueDbaBoro[i]
+  addr<-DbaBoroLongLat2NA[i]
   url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
   #library(XML) 
   doc = xmlTreeParse(url) 
@@ -18,7 +18,19 @@ system.time(DbaBoroLongLat<-t(sapply(1:length(uniqueDbaBoro),function(i){
   return(c(addr,long,lat))
 })))
 
-head(DbaBoroLongLat)
+DbaBoroLongLat3<-DbaBoroLongLat2
+
+DbaBoroLongLat3NA<-DbaBoroLongLat3[is.na(DbaBoroLongLat2[,2]),1]
+DbaBoroLongLat3<-DbaBoroLongLat2[!is.na(DbaBoroLongLat2[,2]),]
+
+save(DbaBoroLongLat3,file='C:/Users/Eric/Desktop/project2-group9/DbaBoroLongLat3.RData')
+save(DbaBoroLongLat3NA,file='C:/Users/Eric/Desktop/project2-group9/DbaBoroLongLat3NA.RData')
+
+
+head(DbaBoroLongLat3)
+
+length(DbaBoroLongLat3NA)
+
 DbaBoroLongLat2<-DbaBoroLongLat
 
 longLat1<-DbaBoroLongLat2[!is.na(DbaBoroLongLat[,2]),]
