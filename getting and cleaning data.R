@@ -28,11 +28,7 @@ restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaur
 
 uniqueDbaBoro<-unique(restaurant$DbaBoro)
 
-<<<<<<< HEAD
-system.time(DbaBoroLongLat2<-t(sapply(1:length(DbaBoroLongLat2NA),function(i){
-=======
 system.time(DbaBoroLongLat<-data.frame(t(sapply(1:length(uniqueDbaBoro),function(i){
->>>>>>> origin/master
   cat(i,'\n')
   addr<-DbaBoroLongLat2NA[i]
   url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
@@ -44,7 +40,6 @@ system.time(DbaBoroLongLat<-data.frame(t(sapply(1:length(uniqueDbaBoro),function
   return(c(addr,long,lat))
 }))))
 
-<<<<<<< HEAD
 DbaBoroLongLat3<-DbaBoroLongLat2
 
 DbaBoroLongLat3NA<-DbaBoroLongLat3[is.na(DbaBoroLongLat2[,2]),1]
@@ -58,8 +53,6 @@ head(DbaBoroLongLat3)
 
 length(DbaBoroLongLat3NA)
 
-=======
->>>>>>> origin/master
 DbaBoroLongLat2<-DbaBoroLongLat
 
 DbaBoroLongLat[,1]<-factor(DbaBoroLongLat[,1])
@@ -67,3 +60,10 @@ DbaBoroLongLat[,2]<-as.numeric(DbaBoroLongLat[,2])
 DbaBoroLongLat[,3]<-as.numeric(DbaBoroLongLat[,3])
 summary(DbaBoroLongLat)
 
+
+load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat1.RData')
+load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat1.RData')
+load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat1.RData')
+a<-data.frame(head(longLat1))
+names(a)<-c('v1','v2','v3')
+mutate_geocode(a,v1)
