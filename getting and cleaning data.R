@@ -28,9 +28,9 @@ restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaur
 
 uniqueDbaBoro<-unique(restaurant$DbaBoro)
 
-system.time(DbaBoroLongLat<-data.frame(t(sapply(1:length(uniqueDbaBoro),function(i){
+system.time(longLat7a<-data.frame(t(sapply(7000:10000,function(i){
   cat(i,'\n')
-  addr<-DbaBoroLongLat2NA[i]
+  addr<-missingLocation[i]
   url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
   #library(XML) 
   doc = xmlTreeParse(url) 
@@ -40,30 +40,26 @@ system.time(DbaBoroLongLat<-data.frame(t(sapply(1:length(uniqueDbaBoro),function
   return(c(addr,long,lat))
 }))))
 
-DbaBoroLongLat3<-DbaBoroLongLat2
+longLat.1<-rbind(longLat1,DbaBoroLongLat3)
+longLat.2<-rbind(longLat.1,DbaBoroLongLat5)
+longLat.3<-longLat.2[longLat.2[,1]%in%uniqueDbaBoro,]
+longLat4<-rbind(longLat.3,longLat1)
+longLat5<-rbind(longLat4,longLat7)
+longLat6<-longLat5
+longLat7<-rbind(longLat6,longLat6na)
 
-DbaBoroLongLat3NA<-DbaBoroLongLat3[is.na(DbaBoroLongLat2[,2]),1]
-DbaBoroLongLat3<-DbaBoroLongLat2[!is.na(DbaBoroLongLat2[,2]),]
+head(longLat7a)
 
-save(DbaBoroLongLat3,file='C:/Users/Eric/Desktop/project2-group9/DbaBoroLongLat3.RData')
-save(DbaBoroLongLat3NA,file='C:/Users/Eric/Desktop/project2-group9/DbaBoroLongLat3NA.RData')
+#  load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat5.RData')
+#  longLat5<-longLat5[!is.na(longLat5[,2]),]
 
+save(longLat7,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat7.RData')
 
-head(DbaBoroLongLat3)
+missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat7[,1]]
 
-length(DbaBoroLongLat3NA)
-
-DbaBoroLongLat2<-DbaBoroLongLat
-
-DbaBoroLongLat[,1]<-factor(DbaBoroLongLat[,1])
-DbaBoroLongLat[,2]<-as.numeric(DbaBoroLongLat[,2])
-DbaBoroLongLat[,3]<-as.numeric(DbaBoroLongLat[,3])
-summary(DbaBoroLongLat)
+save(missingLocation,file='C:/Users/ygu/Desktop/columbia/project2-group9/missingLocation.RData')
 
 
-load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat1.RData')
-load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat1.RData')
-load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat1.RData')
-a<-data.frame(head(longLat1))
-names(a)<-c('v1','v2','v3')
-mutate_geocode(a,v1)
+
+
+
