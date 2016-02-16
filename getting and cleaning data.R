@@ -28,7 +28,7 @@ restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaur
 
 uniqueDbaBoro<-unique(restaurant$DbaBoro)
 
-system.time(longLat7a<-data.frame(t(sapply(7000:10000,function(i){
+system.time(longLat7_5<-data.frame(t(sapply(1:3000,function(i){
   cat(i,'\n')
   addr<-missingLocation[i]
   url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
@@ -47,15 +47,20 @@ longLat4<-rbind(longLat.3,longLat1)
 longLat5<-rbind(longLat4,longLat7)
 longLat6<-longLat5
 longLat7<-rbind(longLat6,longLat6na)
+longLat7_1<-rbind(longLat7,longLat7c)
+longLat7_2<-rbind(longLat7_1,longLat7a)
+longLat7_3<-longLat7_2[!is.na(longLat7_2[,2]),]
+longLat7_4<-rbind(longLat7_3,longLat8)
+longLat8<-rbind(longLat7_4,longLat7_5)
 
-head(longLat7a)
+head(longLat7_5)
 
-#  load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat5.RData')
-#  longLat5<-longLat5[!is.na(longLat5[,2]),]
+# load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat8.RData')
+# longLat7_5<-longLat7_5[!is.na(longLat7_5[,2]),]
 
-save(longLat7,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat7.RData')
+save(longLat8,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat8.RData')
 
-missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat7[,1]]
+missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat8[,1]]
 
 save(missingLocation,file='C:/Users/ygu/Desktop/columbia/project2-group9/missingLocation.RData')
 
