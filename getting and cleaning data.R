@@ -52,15 +52,16 @@ longLat7_2<-rbind(longLat7_1,longLat7a)
 longLat7_3<-longLat7_2[!is.na(longLat7_2[,2]),]
 longLat7_4<-rbind(longLat7_3,longLat8)
 longLat8<-rbind(longLat7_4,longLat7_5)
+longLat9<-rbind(longLat8,longLat7g)
 
 head(longLat7_5)
 
-# load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat8.RData')
+# load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat7g.RData')
 # longLat7_5<-longLat7_5[!is.na(longLat7_5[,2]),]
 
-save(longLat8,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat8.RData')
+save(longLat9,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat9.RData')
 
-missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat8[,1]]
+missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat9[,1]]
 
 save(missingLocation,file='C:/Users/ygu/Desktop/columbia/project2-group9/missingLocation.RData')
 
