@@ -41,9 +41,48 @@ uniqueRestau2$latitude<-as.numeric(uniqueRestau2$latitude)
 uniqueRestau3<-uniqueRestau2[uniqueRestau2$latitude>=40.477399&uniqueRestau2$latitude<=40.917577&
                                uniqueRestau2$longitude>=-74.25909&uniqueRestau2$longitude<=-73.700009,]
 uniqueRestau4<-uniqueRestau3[uniqueRestau3$INSPECTION.DATE>=as.Date('2015-01-01'),]
-uniqueRestau4$Cuisine<-'Chinese'
-uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Afghan','Middle Eastern')]<-'Middle Eastern'
-uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Afghan',)]
+
+# create cuisine
+uniqueRestau4$Cuisine<-as.character(uniqueRestau4$CUISINE.DESCRIPTION)
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Afghan','Armenian','Iranian','Pakistani','Turkish')]<-'Middle Eastern'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('African','Egyptian')]<-'African'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Bagels/Pretzels','Pancakes/Waffles')]<-'Bakery'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Bangladeshi','Filipino','Indonesian','Vietnamese/Cambodian/Malaysia')]<-
+  'South East Asia'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Bottled beverages, including water, sodas, juices, etc.',
+                          'Juice, Smoothies, Fruit Salads')]<-'Juice'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Brazilian','Chilean','Peruvian',
+                          'Latin (Cuban, Dominican, Puerto Rican, South & Central American)')]<-'Latin'
+uniqueRestau4$Cuisine[grepl('coffee',tolower(uniqueRestau4$CUISINE.DESCRIPTION))]<-'Coffee/Tea'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Cajun','Creole','Creole/Cajun')]<-'French'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Californian','Hawaiian','Hotdogs','Hotdogs/Pretzels','Southwestern','Steak',
+                          'Barbecue')]<-'American'
+uniqueRestau4$Cuisine[grepl('chinese',tolower(uniqueRestau4$CUISINE.DESCRIPTION))]<-'Chinese'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Continental','Eastern European','Czech','English','German','Polish','Portuguese',
+                          'Russian','Scandinavian')]<-'European'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('African','Ethiopian','Egyptian','Moroccan')]<-'African'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Fruits/Vegetables','Salads')]<-'Vegetarian'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Not Listed/Not Applicable','Nuts/Confectionary','Soul Food',
+                          'Polynesian','Hawaiian','Australian')]<-'Other'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Pizza/Italian')]<-'Pizza'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%
+                        c('Sandwiches/Salads/Mixed Buffet','Soups','Sandwiches')]<-'Soups & Sandwiches'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Tapas')]<-'Spanish'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Tex-Mex')]<-'Mexican'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Delicatessen')]<-'Deli'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Ice Cream, Gelato, Yogurt, Ices')]<-'Ice Cream'
+uniqueRestau4$Cuisine<-factor(uniqueRestau4$Cuisine)
+
+summary(uniqueRestau4$Cuisine)
+
 save(uniqueRestau4,
      file='C:/Users/ygu/Desktop/columbia/project2-group9/nycRestaurantShiny/www/uniqueRestau4.RData')
 

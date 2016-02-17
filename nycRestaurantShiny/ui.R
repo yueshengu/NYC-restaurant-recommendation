@@ -7,16 +7,18 @@ dashboardPage(
   dbHeader,
 
   dashboardSidebar(
-#     selectInput("live","Live or Offline:",c('Live','Offline'),'Offline'),
+    textInput("location","Your location:",'Columbia University NY, NYC'),
+    sliderInput("distance","Max dist from your location (mi)",
+                min = 1, max = 21, value = 1),
+    selectInput("cuisine","Cuisine:",levels(uniqueRestau4$Cuisine),'Ice Cream',multiple=T),
+    submitButton("Submit")
 #     conditionalPanel("input.live === 'Offline'",
 #                      selectInput("wselect","Word Input:",names(tripdata),'')),
 #     conditionalPanel("input.live === 'Live'",
 #                      textInput("winput","Word Input:",textcontract('mountain')))
-#     textInput("id2","Model:",textcontract('random forest')),
+#     
 #     dateRangeInput('MonthTDateRange',label='Traveling Time:',
 #                    start=as.Date('2016-02-07'),end=as.Date('2016-02-17')),
-#     sliderInput("slider2", "Budget ($)",
-#                 min = 100, max = 5000, value = c(100, 1000))
     ),
               
   dashboardBody(

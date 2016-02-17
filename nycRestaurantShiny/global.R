@@ -5,6 +5,7 @@ library('shinydashboard')
 library('plyr')
 require(RJSONIO)
 library(leaflet)
+library(XML)
 options(stringsAsFactors = F)
 
 brks<-c(0,1e4,5e4,1e5,2.5e5,5e5,1e6)

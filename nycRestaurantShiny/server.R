@@ -2,10 +2,7 @@ options(shiny.maxRequestSize=50*1024^2)
 
 shinyServer(function(input, output, session) {
 
-  output$Map <- renderLeaflet({
-    leaflet() %>% addProviderTiles("Stamen.TonerLite") %>% setView(lng=-73.99, lat=40.73, zoom=13) %>%
-      addCircleMarkers(data=uniqueRestau4, radius = ~5, color = 'red', 
-                       stroke=FALSE, fillOpacity=0.5)#, layerId = ~location)
+  
     
 #     L1 <- leaflet()
 #     L1$tileLayer(provider = 'Stamen.TonerLite')
@@ -26,65 +23,53 @@ shinyServer(function(input, output, session) {
 #            } !#"
 #     )
 #     L1
-  })
   
   
-#     mtdRev<-reactive({
-#       #browser()
-#       if(input$live=='Live'){
-#         query<-strsplit(textcontract(input$winput),' ')
-#         
-#         scrapData<-lapply(1:50,function(i){  
-#           #browser()
-#           #trip<-read_html(paste0("http://www.tripadvisor.com/Search?q=sunny&geo=191#&ssrc=A&o=",i*30))
-#           trip<-read_html(paste0("http://www.tripadvisor.com/Search?q=",query,"&geo=",state$stateCode[i]))
-#           
-#           a<-html_text(html_nodes(trip,xpath="//div[@class='result ATTRACTIONS']/div[@class='info poi-info']"))
-#           includeID<-!grepl('the first to review',a)
-#           
-#           scrapDataTmp<-data.frame(
-#             title=
-#               html_text(
-#                 html_nodes(trip,xpath="//div[@class='result ATTRACTIONS']//div[@class='title']"))[includeID],
-#             address=
-#               html_text(
-#                 html_nodes(trip,xpath="//div[@class='result ATTRACTIONS']//div[@class='address']"))[includeID],
-#             stateName=rep(state$StateName[i],sum(includeID)),
-#             ranking=as.numeric(
-#               gsub(' .*','',
-#                    html_attr(
-#                      html_nodes(
-#                        trip,xpath="//div[@class='result ATTRACTIONS']//img[@class='sprite-ratings']"),'alt'))),
-#             reviewNum=
-#               as.numeric(
-#                 gsub(',| .*','',
-#                      html_text(html_nodes(
-#                        trip,xpath="//div[@class='result ATTRACTIONS']//a[@class='review-count']"))))
-#           )
-#           
-#           scrapDataTmp$rankReview=round(scrapDataTmp$ranking*scrapDataTmp$reviewNum,0)
-#           return(scrapDataTmp)
-#         })
-#         scrapDataBinded<-rbind.fill(scrapData)
-#       }else
-#         scrapDataBinded<-tripdata[[input$wselect]]
-# 
-#       aggScrapData<-aggregate(scrapDataBinded$rankReview,list(scrapDataBinded$stateName),FUN=sum)
-#       names(aggScrapData)<-c('StateName','rankReview')
-#       
-#       aggScrapData2<-aggregate(scrapDataBinded$reviewNum,list(scrapDataBinded$stateName),FUN=sum)
-#       names(aggScrapData2)<-c('StateName','reviewNum')
-#       
-#       aggScrapData3<-merge(aggScrapData,aggScrapData2,by='StateName',all.x=T)
-#       aggScrapData3$MeanRank<-round(aggScrapData3$rankReview/aggScrapData3$reviewNum,3)
-#       
-#       data<-merge(aggScrapData3,state,by='StateName',all.y=T)
-#       data[is.na(data)]<-0
-#       data$MeanRank<-jitter(data$MeanRank+0.1)/5.1*5
-#       data$rankReview<-data$rankReview+1
-#       data$reviewNum<-data$reviewNum+1
-#       return(list(data,scrapDataBinded))
+  
+    Data<-reactive({
+      result<-list()
+      result[[1]]<-uniqueRestau4[uniqueRestau4$Cuisine%in%input$cuisine,]
+      if(!is.null(input$location)){
+        url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',input$location,'&sensor=false')
+        doc = xmlTreeParse(url) 
+        root = xmlRoot(doc) 
+        lat = xmlValue(root[['result']][['geometry']][['location']][['lat']]) 
+        long = xmlValue(root[['result']][['geometry']][['location']][['lng']])
+        result[[2]]<-c(lat,long)
+        subdata<-uniqueRestau4[uniqueRestau4$Cuisine%in%input$cuisine,]
+        #browser()
+        subdata2<-subdata[sqrt((subdata$longitude-as.numeric(long))^2+
+                                 (subdata$latitude-as.numeric(lat))^2)*59.38<=input$distance,]
+        result[[1]]<-subdata2
+      }
+        
+      #browser()
+      return(result)
+    })
+    
+#     output$Map <- renderLeaflet({
+#       leaflet() %>% addProviderTiles("Stamen.TonerLite") %>% setView(lng=-73.99, lat=40.73, zoom=13) %>%
+#         addCircleMarkers(data=Data()[[1]], radius = ~5, color = 'red', 
+#                          stroke=FALSE, fillOpacity=0.5)#, layerId = "restaurant")
 #     })
+#     
+#     observeEvent(input$location, {
+#       
+#       leafletProxy("Map") %>% removeMarker(layerId="Selected")
+#       leafletProxy("Map") %>% setView(lng=Data()[[2]][2], lat=Data()[[2]][1], zoom=13) %>% 
+#         addCircleMarkers(Data()[[2]][2],Data()[[2]][1],radius=10,color="blue",fillColor="orange",
+#                          fillOpacity=1,opacity=1,stroke=TRUE,layerId="Selected")
+#     })
+    
+    
+    output$Map <- renderLeaflet({
+      leaflet() %>% addProviderTiles("Stamen.TonerLite") %>% 
+        setView(lng=Data()[[2]][2], lat=Data()[[2]][1], zoom=13) %>%
+        addCircleMarkers(data=Data()[[1]], radius = ~5, color = 'red', 
+                         stroke=FALSE, fillOpacity=0.5)  %>% 
+        addCircleMarkers(Data()[[2]][2],Data()[[2]][1],radius=10,color="blue",fillColor="orange",
+                         fillOpacity=1,opacity=1,stroke=TRUE,layerId="Selected")
+    })
 #     
 #     output$chart1<-renderChart2({
 #       #browser()
