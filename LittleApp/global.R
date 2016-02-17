@@ -6,7 +6,7 @@ library(shiny)
 library(DT)
 
 #data cleaning
-restaurant<-data.frame(fread('NYres.csv'))
+restaurant<-data.frame(fread('C:/Users/ygu/Downloads/DOHMH_New_York_City_Restaurant_Inspection_Results.csv'))
 summary(restaurant)
 restaurant$DBA<-factor(restaurant$DBA)
 restaurant$BORO<-factor(restaurant$BORO)
