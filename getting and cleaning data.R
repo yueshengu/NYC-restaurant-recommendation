@@ -13,18 +13,28 @@ restaurant$ACTION<-factor(restaurant$ACTION)
 restaurant$VIOLATION.CODE<-factor(restaurant$VIOLATION.CODE)
 restaurant$VIOLATION.DESCRIPTION<-factor(restaurant$VIOLATION.DESCRIPTION)
 restaurant$CRITICAL.FLAG<-factor(restaurant$CRITICAL.FLAG)
-restaurant$ GRADE<-factor(restaurant$ GRADE)
+restaurant$GRADE<-factor(restaurant$ GRADE)
 restaurant$INSPECTION.TYPE<-factor(restaurant$INSPECTION.TYPE)
 restaurant$GRADE.DATE<-as.Date(restaurant$GRADE.DATE,format='%m/%d/%Y')
 restaurant$RECORD.DATE<-as.Date(restaurant$RECORD.DATE,format='%m/%d/%Y')
+restaurant$CAMIS<-factor(restaurant$CAMIS)
+restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaurant$ZIPCODE)
 
+restaurant<-restaurant[rev(order(restaurant$INSPECTION.DATE)),]
 
-summary(restaurant)
+latestInspection<-restaurant[!duplicated(restaurant$CAMIS),]
+closedRestaurants<-latestInspection$CAMIS[grepl('close',tolower(latestInspection$ACTION))]
+
+# remove all closed restaurants
+restaurant2<-restaurant[!restaurant$CAMIS%in%closedRestaurants,]
+
+save(restaurant2,file='C:/Users/ygu/Desktop/columbia/project2-group9/restaurant2.RData')
+
+summary(restaurant2)
 head(restaurant)
 
 summary(restaurant$ACTION)
 
-restaurant$DbaBoro<-paste0(restaurant$BUILDING,' ',restaurant$STREET,' ',restaurant$ZIPCODE)
 
 uniqueDbaBoro<-unique(restaurant$DbaBoro)
 
