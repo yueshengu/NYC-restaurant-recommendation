@@ -27,30 +27,31 @@ toGeoJSON = function(list_){
   })
 }
 
+load("./www/uniqueRestau4.RData")
 
 
-data_ = fromJSON('http://citibikenyc.com/stations/json', encoding = 'UTF-8')
-bike = data_[[2]]
-bike = bike[-13] # bad encoding
-bike2 <- lapply(bike, function(station){
-  station$fillColor = if(station$totalDocks == 0){
-    '#eeeeee'
-  } else {
-    cut(station$availableBikes/station$totalDocks, 
-        breaks = c(0, 0.20, 0.40, 0.60, 0.80, 1), 
-        labels = RColorBrewer::brewer.pal(5, 'RdYlGn'),
-        include.lowest = TRUE
-    ) 
-  }
-  station$popup = whisker::whisker.render('<b>{{station.stationName}}</b><br>
-                                          <b>Total Docks: </b> {{station.totalDocks}} <br>
-                                          <b>Available Bikes:</b> {{station.availableBikes}}
-                                          <p>Retreived At: {{ time }}</p>', list(station = station, time = data_[[1]]))
-  return(station)
-})
-
-
-df <- data.frame(matrix(unlist(bike2), nrow=506, byrow=T))
-names(df)<-names(bike2[[1]])
-df$availableDocks<-as.numeric(df$availableDocks)
-df$fillColor<-as.numeric(df$fillColor)
+# data_ = fromJSON('http://citibikenyc.com/stations/json', encoding = 'UTF-8')
+# bike = data_[[2]]
+# bike = bike[-13] # bad encoding
+# bike2 <- lapply(bike, function(station){
+#   station$fillColor = if(station$totalDocks == 0){
+#     '#eeeeee'
+#   } else {
+#     cut(station$availableBikes/station$totalDocks, 
+#         breaks = c(0, 0.20, 0.40, 0.60, 0.80, 1), 
+#         labels = RColorBrewer::brewer.pal(5, 'RdYlGn'),
+#         include.lowest = TRUE
+#     ) 
+#   }
+#   station$popup = whisker::whisker.render('<b>{{station.stationName}}</b><br>
+#                                           <b>Total Docks: </b> {{station.totalDocks}} <br>
+#                                           <b>Available Bikes:</b> {{station.availableBikes}}
+#                                           <p>Retreived At: {{ time }}</p>', list(station = station, time = data_[[1]]))
+#   return(station)
+# })
+# 
+# 
+# df <- data.frame(matrix(unlist(bike2), nrow=506, byrow=T))
+# names(df)<-names(bike2[[1]])
+# df$availableDocks<-as.numeric(df$availableDocks)
+# df$fillColor<-as.numeric(df$fillColor)

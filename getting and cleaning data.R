@@ -28,63 +28,76 @@ closedRestaurants<-latestInspection$CAMIS[grepl('close',tolower(latestInspection
 # remove all closed restaurants
 restaurant2<-restaurant[!restaurant$CAMIS%in%closedRestaurants,]
 
+
 save(restaurant2,file='C:/Users/ygu/Desktop/columbia/project2-group9/restaurant2.RData')
 
 summary(restaurant2)
-head(restaurant)
 
-summary(restaurant$ACTION)
+# get newest inspection data
+uniqueRestau<-restaurant2[!duplicated(restaurant2$CAMIS),]
+uniqueRestau2<-merge(uniqueRestau,longLat,by='DbaBoro',all.x=T)
+uniqueRestau2$longitude<-as.numeric(uniqueRestau2$longitude)
+uniqueRestau2$latitude<-as.numeric(uniqueRestau2$latitude)
+uniqueRestau3<-uniqueRestau2[uniqueRestau2$latitude>=40.477399&uniqueRestau2$latitude<=40.917577&
+                               uniqueRestau2$longitude>=-74.25909&uniqueRestau2$longitude<=-73.700009,]
+uniqueRestau4<-uniqueRestau3[uniqueRestau3$INSPECTION.DATE>=as.Date('2015-01-01'),]
+uniqueRestau4$Cuisine<-'Chinese'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Afghan','Middle Eastern')]<-'Middle Eastern'
+uniqueRestau4$Cuisine[uniqueRestau4$CUISINE.DESCRIPTION%in%c('Afghan',)]
+save(uniqueRestau4,
+     file='C:/Users/ygu/Desktop/columbia/project2-group9/nycRestaurantShiny/www/uniqueRestau4.RData')
 
 
-uniqueDbaBoro<-unique(restaurant$DbaBoro)
-
-system.time(longLat11s<-data.frame(t(sapply(1:length(missingLocation),function(i){
-  cat(i,'\n')
-  addr<-missingLocation[i]
-  url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
-  #library(XML) 
-  doc = xmlTreeParse(url) 
-  root = xmlRoot(doc) 
-  lat = xmlValue(root[['result']][['geometry']][['location']][['lat']]) 
-  long = xmlValue(root[['result']][['geometry']][['location']][['lng']])
-  return(c(addr,long,lat))
-}))))
-
-longLat.1<-rbind(longLat1,DbaBoroLongLat3)
-longLat.2<-rbind(longLat.1,DbaBoroLongLat5)
-longLat.3<-longLat.2[longLat.2[,1]%in%uniqueDbaBoro,]
-longLat4<-rbind(longLat.3,longLat1)
-longLat5<-rbind(longLat4,longLat7)
-longLat6<-longLat5
-longLat7<-rbind(longLat6,longLat6na)
-longLat7_1<-rbind(longLat7,longLat7c)
-longLat7_2<-rbind(longLat7_1,longLat7a)
-longLat7_3<-longLat7_2[!is.na(longLat7_2[,2]),]
-longLat7_4<-rbind(longLat7_3,longLat8)
-longLat8<-rbind(longLat7_4,longLat7_5)
-longLat9<-rbind(longLat8,longLat7g)
-longLat11<-rbind(longLat9,longLat10)
-longLat11b<-rbind(longLat11,longLat11a)
-longLat11d<-rbind(longLat11b,longLat11c)
-longLat11f<-rbind(longLat11d,longLat11e)
-longLat11h<-rbind(longLat11f,longLat11g)
-longLat11j<-rbind(longLat11h,longLat11i)
-longLat11l<-rbind(longLat11j,longLat11k)
-longLat11n<-rbind(longLat11l,longLat11m)
-longLat11p<-rbind(longLat11n,longLat11o)
-longLat11r<-rbind(longLat11p,longLat11q)
-longLat<-rbind(longLat11r,longLat11s)
-
-head(longLat7_5)
-
-# load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat10_2.RData')
-# longLat11q<-longLat11q[!is.na(longLat11q[,2]),]
-
-save(longLat,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat.RData')
-
-# missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat11r[,1]]
-
-# save(missingLocation,file='C:/Users/ygu/Desktop/columbia/project2-group9/missingLocation.RData')
+# getting longitude and latitude
+# uniqueDbaBoro<-unique(restaurant$DbaBoro)
+# 
+# system.time(longLat11s<-data.frame(t(sapply(1:length(missingLocation),function(i){
+#   cat(i,'\n')
+#   addr<-missingLocation[i]
+#   url = paste0('http://maps.google.com/maps/api/geocode/xml?address=',addr,'&sensor=false')
+#   #library(XML) 
+#   doc = xmlTreeParse(url) 
+#   root = xmlRoot(doc) 
+#   lat = xmlValue(root[['result']][['geometry']][['location']][['lat']]) 
+#   long = xmlValue(root[['result']][['geometry']][['location']][['lng']])
+#   return(c(addr,long,lat))
+# }))))
+# 
+# longLat.1<-rbind(longLat1,DbaBoroLongLat3)
+# longLat.2<-rbind(longLat.1,DbaBoroLongLat5)
+# longLat.3<-longLat.2[longLat.2[,1]%in%uniqueDbaBoro,]
+# longLat4<-rbind(longLat.3,longLat1)
+# longLat5<-rbind(longLat4,longLat7)
+# longLat6<-longLat5
+# longLat7<-rbind(longLat6,longLat6na)
+# longLat7_1<-rbind(longLat7,longLat7c)
+# longLat7_2<-rbind(longLat7_1,longLat7a)
+# longLat7_3<-longLat7_2[!is.na(longLat7_2[,2]),]
+# longLat7_4<-rbind(longLat7_3,longLat8)
+# longLat8<-rbind(longLat7_4,longLat7_5)
+# longLat9<-rbind(longLat8,longLat7g)
+# longLat11<-rbind(longLat9,longLat10)
+# longLat11b<-rbind(longLat11,longLat11a)
+# longLat11d<-rbind(longLat11b,longLat11c)
+# longLat11f<-rbind(longLat11d,longLat11e)
+# longLat11h<-rbind(longLat11f,longLat11g)
+# longLat11j<-rbind(longLat11h,longLat11i)
+# longLat11l<-rbind(longLat11j,longLat11k)
+# longLat11n<-rbind(longLat11l,longLat11m)
+# longLat11p<-rbind(longLat11n,longLat11o)
+# longLat11r<-rbind(longLat11p,longLat11q)
+# longLat<-rbind(longLat11r,longLat11s)
+# 
+# head(longLat7_5)
+# 
+# # load('C:/Users/ygu/Desktop/columbia/project2-group9/longLat10_2.RData')
+# # longLat11q<-longLat11q[!is.na(longLat11q[,2]),]
+# 
+# save(longLat,file='C:/Users/ygu/Desktop/columbia/project2-group9/longLat.RData')
+# 
+# # missingLocation<-uniqueDbaBoro[!uniqueDbaBoro%in%longLat11r[,1]]
+# 
+# # save(missingLocation,file='C:/Users/ygu/Desktop/columbia/project2-group9/missingLocation.RData')
 
 
 

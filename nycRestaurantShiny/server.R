@@ -3,8 +3,8 @@ options(shiny.maxRequestSize=50*1024^2)
 shinyServer(function(input, output, session) {
 
   output$Map <- renderLeaflet({
-    leaflet() %>% addProviderTiles("Stamen.TonerLite") %>% setView(lng=-73.99, lat=40.73, zoom=14) %>%
-      addCircleMarkers(data=df, radius = ~sqrt(10*fillColor), color = ~palfun(fillColor), 
+    leaflet() %>% addProviderTiles("Stamen.TonerLite") %>% setView(lng=-73.99, lat=40.73, zoom=13) %>%
+      addCircleMarkers(data=uniqueRestau4, radius = ~5, color = 'red', 
                        stroke=FALSE, fillOpacity=0.5)#, layerId = ~location)
     
 #     L1 <- leaflet()
