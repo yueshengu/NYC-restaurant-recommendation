@@ -138,7 +138,65 @@ save(uniqueRestau4,
 # 
 # # save(missingLocation,file='C:/Users/ygu/Desktop/columbia/project2-group9/missingLocation.RData')
 
+#browser()
+require(httr)
+require(httpuv)
+require(jsonlite)
+require(base64enc)
+
+consumerKey = "ADeD_W6gmnDhW2ziX_LOOg"
+consumerSecret = "SvNhVv1yHG6La1_LfITM5ufHriM"
+token = "OR9JjyGUS5a43oaJ3pESvKZh4KoaV0cH"
+token_secret = "vzc00ze2nwngnfLYay20iTPjs9A"
 
 
+yelp_query <- function(path, query_args) {
+  # Use OAuth to authorize your request.
+  myapp <- oauth_app("YELP", key=consumerKey, secret=consumerSecret)
+  sig <- sign_oauth1.0(myapp, token=token, token_secret=token_secret)
+  
+  # Build Yelp API URL.
+  scheme <- "https"
+  host <- "api.yelp.com"
+  yelpurl <- paste0(scheme, "://", host, path)
+  
+  # Make request.
+  results <- GET(yelpurl, sig, query=query_args)
+  
+  # If status is not success, print some debugging output.
+  HTTP_SUCCESS <- 200
+  if (results$status != HTTP_SUCCESS) {
+    print(results)
+  }
+  return(results)
+}
 
+yelp_search <- function(term, location, limit=10) {
+  # Search term and location go in the query string.
+  path <- "/v2/search/"
+  #browser()
+  query_args <- list(term=term, location=location, limit=limit)
+  # Make request.
+  results <- yelp_query(path, query_args)
+  locationdataContent = content(results)
+  #browser()
+  if(length(jsonlite::fromJSON(toJSON(locationdataContent))$business)<3)
+    return(rep(NA,7))
+  else{
+    info=data.frame(jsonlite::fromJSON(toJSON(locationdataContent)))
+    
+    if(names(locationdataContent)=='error')
+      return(rep(NA,7))
+    else
+      return(info[c(7,10,11,19,17,3,4)])
+  }
+  
+}
 
+system.time(yelpData3<-data.frame(t(sapply(34:50,function(i){
+  cat(i,'\n')
+  return(yelp_search(uniqueRestau4$DBA[i],uniqueRestau4$DbaBoro[i],1))
+}))))
+yelpData1
+yelpData2
+yelpData3

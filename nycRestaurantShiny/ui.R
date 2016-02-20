@@ -11,7 +11,8 @@ dashboardPage(
     sliderInput("distance","Max dist from your location (mi)",
                 min = 1, max = 21, value = 1),
     selectInput("cuisine","Cuisine:",levels(uniqueRestau4$Cuisine),'Ice Cream',multiple=T),
-    submitButton("Submit")
+    submitButton("Submit",width='100%')
+    
 #     conditionalPanel("input.live === 'Offline'",
 #                      selectInput("wselect","Word Input:",names(tripdata),'')),
 #     conditionalPanel("input.live === 'Live'",
