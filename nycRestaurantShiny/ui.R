@@ -56,7 +56,7 @@ dashboardPage(
                            textOutput("clickedNameCritical"),
                            textOutput("clickedNameRating"),
                            textOutput("clickedNameReviewCount"),
-                           #textOutput("clickedNamePriceRange"),
+                           textOutput("clickedNamePriceRange"),
                            textOutput("clickedNamePhone")))),
               fluidRow(column(width=5,
                               selectInput("nameId","Restaurant Id",c("",sort(uniqueRestau5$NameId)),

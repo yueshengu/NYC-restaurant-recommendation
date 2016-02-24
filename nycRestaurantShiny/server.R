@@ -39,8 +39,9 @@ shinyServer(function(input, output, session) {
         
         src=gsub('.*src=\\\"|\".*','',
                  as.character(html_nodes(url,xpath="//div[@data-key='1']//div[@class='photo-box pb-90s']")))
-        
-        return(src)
+        price<-html_text(
+          html_nodes(url,xpath="//div[@data-key='1']//span[@class='business-attribute price-range']"))
+        return(list(src,price))
       }
     })
     
@@ -95,15 +96,7 @@ shinyServer(function(input, output, session) {
       if(is.null(input$Map_marker_click))
         return(NULL)
       else{
-        #browser()
-#         data<-Data()[[1]]
-#         query<-gsub(' ','\\+',data$businesses.name[data$NameId==input$Map_marker_click$id])
-#         location<-gsub(' ','\\+',data$DbaBoro[data$NameId==input$Map_marker_click$id])
-#         url<-read_html(paste0("http://www.yelp.com/search?find_desc=",query,"&find_loc=",location))
-#         
-#         src=gsub('.*src=\\\"|\".*','',
-#                  as.character(html_nodes(url,xpath="//div[@data-key='1']//div[@class='photo-box pb-90s']")))
-        src<-yelpData()
+        src<-yelpData()[[1]]
         return(tags$img(src=src))
       }
     })
@@ -162,22 +155,15 @@ shinyServer(function(input, output, session) {
       }
     })
     
-#     output$clickedNamePriceRange<-renderText({
-#       #browser()
-#       if(is.null(input$Map_marker_click))
-#         return(NULL)
-#       else{
-#         data<-Data()[[1]]
-#         
-#         query<-gsub(' ','\\+',data$businesses.name[data$NameId==input$Map_marker_click$id])
-#         location<-gsub(' ','\\+',data$DbaBoro[data$NameId==input$Map_marker_click$id])
-#         url<-read_html(paste0("http://www.yelp.com/search?find_desc=",query,"&find_loc=",location))
-#         price<-html_text(
-#           html_nodes(url,xpath="//div[@data-key='1']//span[@class='business-attribute price-range']"))
-# 
-#         return(paste0('Price range: ',price))
-#       }
-#     })
+    output$clickedNamePriceRange<-renderText({
+      #browser()
+      if(is.null(input$Map_marker_click))
+        return(NULL)
+      else{
+        price<-yelpData()[[2]]
+        return(paste0('Price range: ',price))
+      }
+    })
     
     output$clickedNamePhone<-renderText({
       #browser()
