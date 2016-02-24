@@ -63,16 +63,7 @@ dashboardPage(
                                           selected="",multiple=F,width="100%")))
               )
       )
-    #,
-#     fluidRow(column(width=12,tabBox(title="Histogram", 
-#                                     id = "tabset1", height = "250px",
-#                                     tabPanel("Tab1", "First tab content",verbatimTextOutput("clickedName"))
-#     )))
 
   )
 )
 
-#       column(width=12,
-#              infoBoxOutput('bestOption')
-#       )),
-    #column(width=2,img(src="wordcloud.png", height = 200, width = 300))),

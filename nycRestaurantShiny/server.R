@@ -180,38 +180,6 @@ shinyServer(function(input, output, session) {
           return(paste0('Phone #: ',data$PHONE[data$NameId==input$Map_marker_click$id]))
       }
     })
-#     
-#     output$chart1<-renderChart2({
-#       #browser()
-#       data<-mtdRev()[[1]]
-#       choro<-ichoropleth(MeanRank ~ State,legend=F,pal='YlOrRd',data=data)
-#       choro$set(geographyConfig = list(
-#         popupTemplate = "#! function(geography, data){
-#             return '<div class=hoverinfo><strong>' + geography.properties.name + 
-#             ': ' + data.MeanRank + ' out of 5 stars on average' + '</strong></div>';
-#         } !#" 
-#       ))
-#     
-#       choro
-#     })
-#     
-#     
-#     
-#     output$bestOption<-renderInfoBox({
-#       data<-mtdRev()[[1]]
-#       #browser()
-#       bestState<-as.character(data[rev(order(data$MeanRank)),'StateName'][1])
-#       scrapDataBinded<-mtdRev()[[2]]
-#       scrapDataBinded2<-scrapDataBinded[scrapDataBinded$stateName==bestState,]
-#       bestattraction<-scrapDataBinded2[rev(order(scrapDataBinded2$ranking)),]
-#       bestattraction2<-bestattraction[rev(order(bestattraction$reviewNum)),][1,]
-#       return(infoBox(
-#         paste0('Best State is'),
-#         bestState,
-#         paste0('Famous attraction: ',bestattraction2$title,' (',bestattraction2$ranking,
-#                ' stars out of 5 ; ',bestattraction2$reviewNum,' reviews on tripadvisor.com)'),
-#         icon=icon("trophy"),color="yellow"
-#       ))
-#     })
+
 
   })
