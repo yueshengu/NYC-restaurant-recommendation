@@ -65,6 +65,7 @@ shinyServer(function(input, output, session) {
     })
     
     output$Map <- renderLeaflet({
+      #browser()
       leaflet() %>% addProviderTiles("Stamen.TonerLite") %>% 
         setView(lng=Data()[[2]][2], lat=Data()[[2]][1], zoom=13) %>%
         addCircleMarkers(data=Data()[[1]],radius=~businesses.rating*2,fillColor=~pal(SafetyScore), 
