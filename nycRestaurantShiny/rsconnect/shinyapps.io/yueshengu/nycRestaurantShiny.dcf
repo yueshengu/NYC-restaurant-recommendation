@@ -1,8 +1,8 @@
 name: nycRestaurantShiny
 account: yueshengu
 server: shinyapps.io
-bundleId: 379622
+bundleId: 379633
 url: https://yueshengu.shinyapps.io/nycRestaurantShiny/
-when: 1456343413.88286
+when: 1456343748.03229
 asMultiple: FALSE
 asStatic: FALSE
