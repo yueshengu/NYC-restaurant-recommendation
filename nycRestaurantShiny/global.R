@@ -23,7 +23,7 @@ toGeoJSON = function(list_){
   })
 }
 
-load("./www/uniqueRestau5.RData")
+load("www/uniqueRestau5.RData")
 
 factpal <- colorFactor(heat.colors(4), uniqueRestau5$SafetyScoreColor)
 

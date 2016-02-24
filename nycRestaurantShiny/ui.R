@@ -36,7 +36,7 @@ dashboardPage(
                            title=tagList(shiny::icon("pie-chart"),"Cuisine distribution at your location"),
                            status='primary',
                            collapsible=T,
-                           showOutput("pieChart","Highcharts")
+                           showOutput("pieChart","highcharts")
                        )))),
       
       tabItem(tabName='locator',
