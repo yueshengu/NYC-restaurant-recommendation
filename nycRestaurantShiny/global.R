@@ -6,13 +6,13 @@ library('plyr')
 require(RJSONIO)
 library(leaflet)
 library(XML)
+library(rvest)
 options(stringsAsFactors = F)
 
 brks<-c(0,1e4,5e4,1e5,2.5e5,5e5,1e6)
 nb<-length(brks)
 
 palfun<-colorFactor(palette=c("navy","navy","magenta4","magenta4","red","red"),domain=1:(nb-1))
-
 
 
 toGeoJSON = function(list_){
@@ -28,8 +28,14 @@ toGeoJSON = function(list_){
   })
 }
 
-load("./www/uniqueRestau4.RData")
+load("./www/uniqueRestau5.RData")
 
+factpal <- colorFactor(heat.colors(4), uniqueRestau5$SafetyScoreColor)
+
+pal <- colorNumeric(
+  palette = "Reds",
+  domain = uniqueRestau5$SafetyScore
+)
 
 # data_ = fromJSON('http://citibikenyc.com/stations/json', encoding = 'UTF-8')
 # bike = data_[[2]]

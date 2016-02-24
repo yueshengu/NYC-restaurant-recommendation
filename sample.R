@@ -53,15 +53,19 @@ yelp_query <- function(path, query_args) {
 yelp_search <- function(term, location, limit=10) {
   # Search term and location go in the query string.
   path <- "/v2/search/"
+  #browser()
   query_args <- list(term=term, location=location, limit=limit)
-
-  # Make request.
+    # Make request.
   results <- yelp_query(path, query_args)
-  return(results)
+  locationdataContent = content(results)
+  info=data.frame(jsonlite::fromJSON(toJSON(locationdataContent)))
+  #browser()
+  return(info[c(7,10,11,19,17,3,4)])
 }
 
 ######################
 a<-yelp_search('POLLOS MARIO RESTAURANT AND SPORTS BAR','37TH AVE 11372',1)
+a<-yelp_search(uniqueRestau4$DBA[1:2],uniqueRestau4$DbaBoro[1:2],1)
 #######################
 
 yelp_business <- function(business_id) {
