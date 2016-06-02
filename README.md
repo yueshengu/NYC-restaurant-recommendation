@@ -12,4 +12,3 @@ Link to our app: https://yueshengu.shinyapps.io/nycRestaurantShiny/
 
 Our app focuses on recommending the best NYC restaurants around your current location. Given a short expression describing your location (ie. Columbia University), our app will fetch the longitude and latitude from Google, show your location on a leaflet map as well as nearby restuarants that match your taste. If you click on a restaurant, our app will scrape data from Yelp and show its detailed info on the side of the map.
 
-![screenshot](doc/screenshot2.png)
